@@ -1,0 +1,129 @@
+$susy: (
+  columns: 12,
+  gutters: 1/2,
+  gutter-position: split
+);
+
+
+.container {
+  @include container(40em);
+
+  header {
+    @include container;
+    .navigation-filter {
+
+    }
+
+    .switch {
+      @include container;
+      label {
+        @include span(4);
+      }
+    }
+  }
+
+  .list {
+    // @include container;
+    background: $grey;
+    // margin-bottom: 1em;
+  }
+
+  // list-view
+  .list-view {
+  margin-bottom: 1em;
+  transition:all 1.0s ease;
+
+      .list {
+        @include container;
+        background: $grey;
+        margin-bottom: 1em;
+          .img-con {
+            @include span(12);
+            margin-left: 0;
+            img {
+              @include span(4);
+              margin-left: 0;
+            }
+          .text-con {
+            @include gutters();
+            a {
+              text-decoration: none;
+              color: white;
+              background: black;
+              font-weight: lighter;
+            }
+            h2 {
+              font-weight: 100;
+            }
+            span {
+                background: black;
+                padding-left: 1em;
+                padding-right: 1em;
+            }
+            p {
+              font-weight: lighter;
+            }
+          }
+        }
+      }
+  }
+  // enf of list-view
+
+
+  .list-box {
+    box-sizing: border-box;
+    transition:all 1.0s ease;
+    .img-con {
+      @include span(4);
+      position: relative;
+      display: block;
+      img {
+        max-width: 100%;
+      }
+
+      &:before {
+        display: block;
+        position: relative;
+        content: '';
+      }
+
+      .text-con {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        opacity: 0;
+        // transition: opacity .3s;
+        text-align: center;
+
+        a {
+            text-decoration: none;
+            color: $grey;
+        }
+
+        span {
+          background: $black;
+          font-weight: 100;
+        }
+
+        p {
+          font-weight: lighter;
+        }
+
+
+        &:hover {
+          position: absolute;
+          opacity: 1;
+          background: rgba(113,123,161, 0.9);
+          width: 100%;
+          left: 0;
+          bottom: 0;
+          transition: all 0.3s ease-in-out;
+        }
+      }
+    }
+  }
+  // list-box
+
+}

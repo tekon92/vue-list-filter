@@ -1,0 +1,109 @@
+$yellow: #F3EA53;
+$black: #040707;
+$grey: #cdcccc;
+$white: #ffffff;
+
+@import 'https://fonts.googleapis.com/css?family=Roboto:300,400,500';
+@import 'https://fonts.googleapis.com/css?family=Lato';
+@import 'node_modules/compass-mixins/lib/_compass.scss';
+@import "bower_components/susy/sass/_susy.scss";
+@import "grid";
+
+body {
+    font-family: "Lato", "Roboto", sans-serif;
+    background: $white;
+    color: $black;
+}
+
+
+header {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1em;
+    background: $yellow;
+
+    &.view {
+      .navigation-filter {
+        a {
+          &.liview {
+            background: $grey;
+          }
+        }
+      }
+    }
+
+    &.box {
+      .navigation-filter {
+        a {
+          &.libox {
+            background: $grey;
+          }
+        }
+      }
+    }
+
+    .navigation-filter {
+      padding: 1em;
+      text-align: right;
+
+      a {
+        color: $black;
+        line-height: 40px;
+        margin-left: 10px;
+        font-size: 1.5em;
+        width: 40px;
+        height: 40px;
+        display: inline-block;
+        text-align: center;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: $grey;
+        }
+
+      }
+    }
+
+    .switch {
+      background-color: $grey;
+
+      input{
+        display: none;
+        &:checked + label {
+          transition: all 200ms ease;
+          background: lighten($grey, 10%);
+        }
+      }
+
+      label {
+        // @include span(4);
+        float: left;
+        display: inline-block;
+        text-align: center;
+        transition: all 0.1s ease-in-out;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        &:first-of-type {
+          border-radius: 4px 0 0 4px;
+        }
+
+        &:last-of-type {
+          border-radius: 0 4px 4px 0;
+        }
+      }
+    }
+}
+
+/* Media Queries */
+@media screen and (max-width: 400px) {
+	.container > header{
+		text-align: center;
+	}
+	p.codrops-demos {
+		position: relative;
+		top: auto;
+		left: auto;
+	}
+}

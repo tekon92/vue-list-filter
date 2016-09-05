@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>list-style</title>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body>
+    <div class="container">
+      <header :class="currentClass">
+        <div class="navigation-filter">
+          <a href="#" v-on:click.prevent="getClass(0)" class="liview"><i class="fa fa-th-list"></i></a>
+          <a href="#" v-on:click.prevent="getClass(1)" class="libox"><i class="fa fa-th"></i></a>
+        </div>
+
+        <div class="switch">
+          <input class="all" name="radio" id="all" type="radio" value="all" v-model="status" checked>
+          <label for="all">All</label>
+          <input class="online" name="radio" id="online" type="radio" value="online" v-model="status">
+          <label for="online">online</label>
+          <input class="offline" name="radio" id="offline" type="radio" value="offline" v-model="status">
+          <label for="offline">offline</label>
+        </div>
+      </header>
+
+      <div class="list-content" :class="currentStyle">
+        <list v-for="list in channelRes | status" :list="list" track-by="$index" transition="expand"></list>
+      </div>
+      <!-- end of top-content -->
+
+      <!-- template -->
+      <template id="list-header">
+
+      </template>
+
+      <template id="list-template">
+        <div class="list">
+          <div class="img-con">
+            <img v-if="list.img" v-bind:src="list.img" class="img-responsive thumbnail">
+            <img v-else src="http://dummyimage.com/300x300/ecf0e7/5c5457.jpg&text=0x3F" class="img-responsive thumbnail">
+
+            <div class="text-con">
+              <a v-bind:href="list.url" target="_blank">
+                <h2 v-if="list.name">
+                  <span>{{ list.name }}</span>
+                </h2>
+              </a>
+              <p v-if="list.desc">
+                {{ list.desc }}
+              </p>
+              <p v-else>
+                Not much info from this Author
+              </p>
+            </div>
+          </div>
+        </div>
+      </template>
+      <!-- end of template -->
+    </div>
+  </body>
+
+  <script src="bower_components/vue/dist/vue.js"></script>
+  <script src="bower_components/vue-resource/dist/vue-resource.js"></script>
+  <script>
+
+  Vue.component('list', {
+    template: '#list-template',
+    props: ['list']
+  })
+
+  Vue.component('list-header', {
+    template: '#list-header',
+    props: ['list-header']
+  })
+
+  var vm = new Vue({
+    el: 'body',
+    data: {
+      users: ["freecodecamp", "storbeck", "terakilobyte", "habathcx","RobotCaleb","thomasballinger","noobs2ninjas","beohoff","test_channel","cretetion","sheevergaming","TR7K","OgamingSC2","ESL_SC2"],
+      // users: ['freecodecamp', 'storbeck', 'terakilobyte'],
+      channelRes: [],
+      obj: {},
+      status: ['all','online', 'offline'],
+      reverse: true,
+      listStyle: '',
+      isA: false,
+      isB: true,
+      displayMode: 0,
+      classStyle: ''
+    },
+    computed: {
+      currentStyle: function () {
+        if (this.displayMode === 0) {
+           this.listStyle = 'list-view'
+        } else {
+          this.listStyle = 'list-box'
+        }
+
+        return this.listStyle
+      },
+      currentClass: function () {
+        if (this.displayMode === 0) {
+           this.classStyle = 'view'
+        } else {
+          this.classStyle = 'box'
+        }
+
+        return this.classStyle
+      }
+    },
+    ready: function () {
+      this.getChannel()
+      this.showList()
+
+    },
+    methods: {
+      getChannel: function () {
+        var instance = this
+        var resnow = this.channelRes
+
+          this.users.forEach(function(channel, index){
+            instance.$http.get(instance.makeUrl('streams', channel)).then((response) => {
+              instance.$http.get(instance.makeUrl('channels', channel)).then((data) => {
+                if (response.json().stream === null || response.json().stream === undefined) {
+                  instance.channelRes.$set(index,{status: 'offline', name: data.json().name, desc: data.json().status, img: data.json().logo, url: data.json().url})
+                } else {
+                  instance.channelRes.$set(index,{status: 'online', name: data.json().name, desc: data.json().status, img: data.json().logo, url: data.json().url})
+                }
+              }, (data) => {
+                console.log(data)
+              })
+            }, (response) => {
+              console.log(response)
+            })
+          })
+      },
+      makeUrl: function (type, name) {
+        return 'https://api.twitch.tv/kraken/' +type+ '/' +name+ '?callback';
+      },
+      showList: function () {
+        if (this.isA) {
+          this.isA = this.isA
+          this.isB = this.isB
+        } else {
+          this.isA = !this.isA
+          this.isB = !this.isB
+        }
+      },
+      changeClass: function () {
+        this.reverse = !this.reverse
+      },
+      getClass: function (option) {
+        this.displayMode = option;
+      },
+    },
+    filters: {
+      status: function (account) {
+        if (this.status == 'all') {
+          return account
+        }
+
+        return account.filter(function(account) {
+          return account.status == this.status
+        }.bind(this))
+      }
+    }
+  })
+  </script>
+</html>

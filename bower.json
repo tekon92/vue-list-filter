@@ -1,0 +1,23 @@
+{
+  "name": "list-items",
+  "description": "twitch-app-list",
+  "main": "index.js",
+  "authors": [
+    "tekon92"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "vue": "^1.0.26",
+    "vue-resource": "^0.9.3",
+    "susy": "^2.2.12"
+  }
+}
